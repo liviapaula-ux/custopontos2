@@ -646,7 +646,8 @@
                         tension: 0.2,
                         pointBackgroundColor: '#dc2626',
                         pointRadius: 5,
-                        pointHoverRadius: 8
+                        pointHoverRadius: 8,
+                        clip: false // Previne o corte da linha nos limites
                     },
                     {
                         label: 'Arrecadação em Pontos',
@@ -658,13 +659,14 @@
                         tension: 0.2,
                         pointBackgroundColor: '#059669',
                         pointRadius: 5,
-                        pointHoverRadius: 8
+                        pointHoverRadius: 8,
+                        clip: false
                     }
                 ]
             },
             options: {
                 layout: {
-                    padding: { top: 40, right: 20 } // Espaço extra para as etiquetas não cortarem
+                    padding: { top: 70, right: 30, left: 10, bottom: 10 } // Espaço extra aumentado para as etiquetas não cortarem
                 },
                 responsive: true,
                 maintainAspectRatio: false,
@@ -705,7 +707,7 @@
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 14, // Aumentado para caber as etiquetas
+                        max: 16, // Aumentado consideravelmente para dar bastante respiro no topo
                         title: { display: true, text: 'Milhões (R$)' },
                         ticks: {
                             callback: function(value) { return 'R$ ' + value + 'M'; }
