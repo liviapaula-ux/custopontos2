@@ -6,6 +6,8 @@
     <title>Painel Analítico Completo - Custo Saúde & Pontos</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- NOVO: Adicionado plugin para exibir os labels direto no gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
@@ -618,44 +620,52 @@
 
     <!-- Script for Chart.js -->
     <script>
+        // Registrar o plugin de datalabels globalmente
+        Chart.register(ChartDataLabels);
+        
         // Set default font to Inter
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.color = '#64748b'; // slate-500
+        // Desativar datalabels por padrão para não poluir os outros gráficos
+        Chart.defaults.plugins.datalabels.display = false;
 
-        // NOVO: Gráfico de Descolamento (Fatura x Pontos)
+        // NOVO: Gráfico de Descolamento (Fatura x Pontos) SUPER VISUAL
         const ctxDescolamento = document.getElementById('descolamentoChart').getContext('2d');
         new Chart(ctxDescolamento, {
             type: 'line',
             data: {
-                labels: ['FY25 (Histórico)', 'FY26 (Atual)', 'FY27 (Projetado)'],
+                labels: ['FY24 (Histórico)', 'FY25 (Histórico)', 'FY26 (Atual)', 'FY27 (Projetado)'],
                 datasets: [
                     {
                         label: 'Custo Total da Fatura',
-                        data: [9.65, 10.64, 11.37],
+                        data: [8.60, 9.65, 10.64, 11.37],
                         borderColor: '#ef4444', // red-500
-                        backgroundColor: 'rgba(239, 68, 68, 0.15)', // Light red fill
+                        backgroundColor: 'rgba(239, 68, 68, 0.10)', // Light red fill
                         borderWidth: 3,
                         fill: 1, // Fill down to the second dataset
                         tension: 0.2,
                         pointBackgroundColor: '#dc2626',
-                        pointRadius: 6,
+                        pointRadius: 5,
                         pointHoverRadius: 8
                     },
                     {
                         label: 'Arrecadação em Pontos',
-                        data: [3.79, 3.79, 3.79], // Arrecadação real baseada no total de pontos alocados
+                        data: [3.70, 3.79, 3.79, 3.79], // Base estável
                         borderColor: '#10b981', // emerald-500
-                        backgroundColor: 'rgba(16, 185, 129, 0.15)', // Light green fill
+                        backgroundColor: 'rgba(16, 185, 129, 0.10)', // Light green fill
                         borderWidth: 3,
                         fill: 'start', // Fill to zero
                         tension: 0.2,
                         pointBackgroundColor: '#059669',
-                        pointRadius: 6,
+                        pointRadius: 5,
                         pointHoverRadius: 8
                     }
                 ]
             },
             options: {
+                layout: {
+                    padding: { top: 40, right: 20 } // Espaço extra para as etiquetas não cortarem
+                },
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
@@ -663,18 +673,39 @@
                         position: 'top', 
                         labels: { usePointStyle: true, boxWidth: 8, font: { weight: 'bold' } } 
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': R$ ' + context.parsed.y.toFixed(2).replace('.', ',') + ' Milhões';
+                    // Ativando e configurando as etiquetas visíveis
+                    datalabels: {
+                        display: true,
+                        align: function(context) {
+                            return context.datasetIndex === 0 ? 'top' : 'bottom';
+                        },
+                        offset: 8,
+                        backgroundColor: function(context) {
+                            return context.datasetIndex === 0 ? 'rgba(220, 38, 38, 0.9)' : 'rgba(16, 185, 129, 0.9)';
+                        },
+                        color: 'white',
+                        borderRadius: 6,
+                        padding: 8,
+                        font: { family: 'Inter', weight: 'bold', size: 11, lineHeight: 1.4 },
+                        formatter: function(value, context) {
+                            if (context.datasetIndex === 0) {
+                                // Calcula o déficit dinamicamente subtraindo a linha de baixo
+                                let arrecadacao = context.chart.data.datasets[1].data[context.dataIndex];
+                                let deficit = (value - arrecadacao).toFixed(2).replace('.', ',');
+                                return ['Fatura: R$ ' + value.toFixed(2).replace('.', ',') + 'M', 'Déficit (Baixo d\'água): R$ ' + deficit + 'M'];
+                            } else {
+                                return 'Pontos: R$ ' + value.toFixed(2).replace('.', ',') + 'M';
                             }
                         }
+                    },
+                    tooltip: {
+                        enabled: false // Desativa o tooltip nativo já que os dados já estão visíveis
                     }
                 },
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 13,
+                        max: 14, // Aumentado para caber as etiquetas
                         title: { display: true, text: 'Milhões (R$)' },
                         ticks: {
                             callback: function(value) { return 'R$ ' + value + 'M'; }
