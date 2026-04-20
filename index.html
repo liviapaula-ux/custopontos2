@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Analítico Completo - Custo Saúde & Pontos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            900: '#7f1d1d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+        .table-header {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased p-4 md:p-8">
+
+    <!-- Header -->
+    <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-300 pb-5">
+        <div>
+            <h1 class="text-3xl font-bold text-slate-900 flex items-center gap-3">
+                <i class="fa-solid fa-chart-pie text-brand-600"></i>
+                Visão Analítica: Custo de Saúde e Pontos
+            </h1>
+            <p class="text-slate-500 mt-1">Detalhamento completo do impacto do VCMH (7,76%), Medianas e Grades</p>
+        </div>
+        <div class="mt-4 md:mt-0 bg-white px-4 py-2 rounded-lg shadow-sm border border-slate-200 text-sm font-medium text-slate-600">
+            <i class="fa-solid fa-calendar-day mr-2"></i> Base Atual (FY26) vs. Projeção (FY27)
+        </div>
+    </header>
+
+    <!-- Resumo Executivo / KPIs -->
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        
+        <!-- KPI 1: Custo Total -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-blue-500 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">Custo Total de Saúde</p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-slate-800">R$ 11,37<span class="text-sm font-normal text-slate-500">M</span></h3>
+                        <span class="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded">FY 27</span>
+                    </div>
+                </div>
+                <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                    <i class="fa-solid fa-money-bill-trend-up text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-sm text-slate-600">
+                    <span class="font-semibold text-slate-400 text-xs uppercase mr-1">Antes (FY26):</span> 
+                    <strong>R$ 10,64 Milhões</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- KPI 2: Baixo D'agua -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-brand-500 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">Custo "Baixo d'Água"</p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-brand-600">R$ 8,69<span class="text-sm font-normal text-brand-500">M</span></h3>
+                        <span class="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded">FY 27</span>
+                    </div>
+                </div>
+                <div class="p-2 bg-brand-50 rounded-lg text-brand-600">
+                    <i class="fa-solid fa-water-arrow-down text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-sm text-slate-600">
+                    <span class="font-semibold text-slate-400 text-xs uppercase mr-1">Antes (FY26):</span> 
+                    <strong>R$ 7,96 Milhões</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- KPI 3: Mediana -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-orange-500 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">Mediana do Ponto</p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-slate-800">R$ 3,00<span class="text-sm font-normal text-slate-500">/pt</span></h3>
+                        <span class="text-xs font-bold text-orange-500 bg-orange-50 px-2 py-0.5 rounded">FY 27</span>
+                    </div>
+                </div>
+                <div class="p-2 bg-orange-50 rounded-lg text-orange-600">
+                    <i class="fa-solid fa-scale-balanced text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-sm text-slate-600">
+                    <span class="font-semibold text-slate-400 text-xs uppercase mr-1">Antes (FY26):</span> 
+                    <strong>R$ 2,80 /pt</strong>
+                </p>
+            </div>
+        </div>
+
+        <!-- KPI 4: Foodlovers -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 border-l-4 border-l-emerald-500 flex flex-col justify-between">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-wide mb-1">População Atendida</p>
+                    <div class="flex items-baseline gap-2">
+                        <h3 class="text-2xl font-bold text-emerald-700">7.459</h3>
+                        <span class="text-sm font-normal text-slate-500">Foodlovers</span>
+                    </div>
+                </div>
+                <div class="p-2 bg-emerald-50 rounded-lg text-emerald-600">
+                    <i class="fa-solid fa-users text-xl"></i>
+                </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-100">
+                <p class="text-sm text-slate-600 flex justify-between">
+                    <span>Sem dep: <strong>4.699</strong></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Com dep: <strong>2.760</strong></span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Row 1: Gráficos de Demografia e Mediana -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        
+        <!-- Gráfico: Foodlovers por Dependente -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-800">Foodlovers por Qtde. de Dependentes</h2>
+                <i class="fa-solid fa-people-roof text-slate-400"></i>
+            </div>
+            <p class="text-sm text-slate-500 mb-6">Distribuição total da base alocada. O "baixo d'água" existe para todos, mas a defasagem entra em modo crítico nas famílias com 2+ dependentes.</p>
+            <div class="relative h-72 w-full">
+                <canvas id="popChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico: Mediana Antes vs Depois -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-800">Custo Mediano do Ponto (FY26 vs. FY27)</h2>
+                <i class="fa-solid fa-chart-line text-slate-400"></i>
+            </div>
+            <p class="text-sm text-slate-500 mb-6">Comparação do custo do ponto de acordo com a quantidade de dependentes, demonstrando a inflação da tabela.</p>
+            <div class="relative h-72 w-full">
+                <canvas id="medianChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 2: Gráficos de Grades e Baixo d'Água -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        
+        <!-- Gráfico: Pontos por Grade -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-800">Pontos de Saúde Alocados por Grade</h2>
+                <i class="fa-solid fa-layer-group text-slate-400"></i>
+            </div>
+            <p class="text-sm text-slate-500 mb-6">Concentração de pontos do orçamento flexível alocados em saúde pelas principais grades da empresa.</p>
+            <div class="relative h-64 w-full">
+                <canvas id="gradeChart"></canvas>
+            </div>
+        </div>
+
+        <!-- NOVO Gráfico: Arrecadação vs Baixo d'Água -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-800">Custo "Baixo d'Água" por Plano (FY27)</h2>
+                <i class="fa-solid fa-water text-slate-400"></i>
+            </div>
+            <p class="text-sm text-slate-500 mb-6">Abertura do déficit real: Custo total projetado menos os pontos efetivamente descontados dos colaboradores (titular + 1 dep).</p>
+            <div class="relative h-64 w-full">
+                <canvas id="baixoDaguaChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Row 3: Tabela Completa de Custos do Ponto por Plano -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+        <div class="p-6 border-b border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center bg-slate-50 gap-4">
+            <div class="max-w-2xl">
+                <h2 class="text-xl font-bold text-slate-800">Heatmap de Risco: Volume Financeiro (FY27)</h2>
+                <p class="text-sm text-slate-500 mt-2">
+                    A cor de alerta não representa apenas o valor do ponto, mas o <strong>Risco de Escala (Custo do Ponto × Quantidade de Vidas)</strong>. 
+                    <br>Um ponto caro com apenas 1 pessoa apresenta risco baixo (Verde), mas um ponto médio com 2.000 pessoas apresenta risco crítico (Vermelho).
+                </p>
+            </div>
+            <div class="flex flex-col gap-2 text-xs font-bold w-full md:w-auto">
+                <span class="px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-md border border-emerald-200 flex justify-between"><span class="mr-4">Risco Baixo</span> (Poucas Vidas)</span>
+                <span class="px-3 py-1.5 bg-yellow-50 text-yellow-700 rounded-md border border-yellow-200 flex justify-between"><span class="mr-4">Risco Moderado</span> (Atenção)</span>
+                <span class="px-3 py-1.5 bg-orange-100 text-orange-800 rounded-md border border-orange-200 flex justify-between"><span class="mr-4">Risco Alto</span> (Volume Considerável)</span>
+                <span class="px-3 py-1.5 bg-red-100 text-red-800 rounded-md border border-red-200 flex justify-between"><span class="mr-4">Risco Crítico</span> (Coração do Custo)</span>
+            </div>
+        </div>
+        <div class="overflow-x-auto p-4">
+            <table class="w-full text-left text-sm whitespace-nowrap border-separate border-spacing-1">
+                <thead class="text-slate-500 font-semibold text-xs uppercase tracking-wide">
+                    <tr>
+                        <th class="px-4 py-2">Operadora / Plano</th>
+                        <th class="px-2 py-2 text-center w-24">0 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">1 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">2 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">3 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">4 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">5 Dep</th>
+                        <th class="px-2 py-2 text-center w-24">6 Dep</th>
+                    </tr>
+                </thead>
+                <tbody class="text-slate-800">
+                    
+                    <!-- Bradesco Efetivo -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Bradesco Efetivo</td>
+                        <!-- 0 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-red-100 text-red-800 border border-red-200"><span class="font-bold">R$ 2,14</span><span class="text-[10px] opacity-80">707 vidas</span></div></td>
+                        <!-- 1 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,14</span><span class="text-[10px] opacity-80">82 vidas</span></div></td>
+                        <!-- 2 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 3,21</span><span class="text-[10px] opacity-80">34 vidas</span></div></td>
+                        <!-- 3 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 4,28</span><span class="text-[10px] opacity-80">20 vidas</span></div></td>
+                        <!-- 4 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 5,34</span><span class="text-[10px] opacity-80">3 vidas</span></div></td>
+                        <!-- 5/6 Dep -->
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Bradesco Ideal -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Bradesco Ideal</td>
+                        <!-- 0 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-orange-100 text-orange-800 border border-orange-200"><span class="font-bold">R$ 2,35</span><span class="text-[10px] opacity-80">361 vidas</span></div></td>
+                        <!-- 1 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,35</span><span class="text-[10px] opacity-80">100 vidas</span></div></td>
+                        <!-- 2 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 3,53</span><span class="text-[10px] opacity-80">48 vidas</span></div></td>
+                        <!-- 3 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 4,70</span><span class="text-[10px] opacity-80">31 vidas</span></div></td>
+                        <!-- 4 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 5,88</span><span class="text-[10px] opacity-80">7 vidas</span></div></td>
+                        <!-- 5 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 7,05</span><span class="text-[10px] opacity-80">2 vidas</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Bradesco Nacional -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-blue-900 border-b border-slate-100 bg-blue-50/30 rounded-l-lg border-l-4 border-l-blue-500">
+                            Bradesco Nacional
+                            <div class="text-[10px] font-normal text-blue-600 mt-1">57% das vidas alocadas</div>
+                        </td>
+                        <!-- 0 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-red-100 text-red-800 border border-red-300 ring-2 ring-red-500/20"><span class="font-bold">R$ 2,47</span><span class="text-[10px] font-semibold opacity-90 mt-0.5">2.621 vidas</span></div></td>
+                        <!-- 1 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-red-100 text-red-800 border border-red-300"><span class="font-bold">R$ 2,47</span><span class="text-[10px] font-semibold opacity-90 mt-0.5">839 vidas</span></div></td>
+                        <!-- 2 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-red-100 text-red-800 border border-red-300"><span class="font-bold">R$ 3,70</span><span class="text-[10px] font-semibold opacity-90 mt-0.5">504 vidas</span></div></td>
+                        <!-- 3 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-red-100 text-red-800 border border-red-300"><span class="font-bold">R$ 4,94</span><span class="text-[10px] font-semibold opacity-90 mt-0.5">254 vidas</span></div></td>
+                        <!-- 4 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 6,17</span><span class="text-[10px] opacity-80 mt-0.5">44 vidas</span></div></td>
+                        <!-- 5 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 7,40</span><span class="text-[10px] opacity-80 mt-0.5">8 vidas</span></div></td>
+                        <!-- 6 Dep -->
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 8,64</span><span class="text-[10px] opacity-80 mt-0.5">2 vidas</span></div></td>
+                    </tr>
+
+                    <!-- Bradesco Nacional Plus -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Bradesco Nac. Plus</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-orange-100 text-orange-800 border border-orange-200"><span class="font-bold">R$ 2,69</span><span class="text-[10px] opacity-80">301 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,69</span><span class="text-[10px] opacity-80">116 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 4,04</span><span class="text-[10px] opacity-80">103 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 5,38</span><span class="text-[10px] opacity-80">59 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 6,73</span><span class="text-[10px] opacity-80">8 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 8,08</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Bradesco Premium -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Bradesco Premium</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 3,17</span><span class="text-[10px] opacity-80">49 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 3,17</span><span class="text-[10px] opacity-80">23 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 4,76</span><span class="text-[10px] opacity-80">16 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 6,35</span><span class="text-[10px] opacity-80">16 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 7,94</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 9,52</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Unimed Estilo -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100 mt-4">Unimed Estilo</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-orange-100 text-orange-800 border border-orange-200"><span class="font-bold">R$ 1,89</span><span class="text-[10px] opacity-80">335 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 1,89</span><span class="text-[10px] opacity-80">94 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,83</span><span class="text-[10px] opacity-80">50 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 3,77</span><span class="text-[10px] opacity-80">37 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 4,72</span><span class="text-[10px] opacity-80">6 vidas</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Unimed Absoluto -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Unimed Absoluto</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,03</span><span class="text-[10px] opacity-80">115 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 2,03</span><span class="text-[10px] opacity-80">36 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 3,05</span><span class="text-[10px] opacity-80">23 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 4,06</span><span class="text-[10px] opacity-80">15 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 5,08</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 7,11</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                    </tr>
+
+                    <!-- Unimed Exclusivo -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Unimed Exclusivo</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 2,14</span><span class="text-[10px] opacity-80">5 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 2,14</span><span class="text-[10px] opacity-80">3 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 3,20</span><span class="text-[10px] opacity-80">1 vida</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 4,27</span><span class="text-[10px] opacity-80">2 vidas</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+
+                    <!-- Unimed Superior -->
+                    <tr>
+                        <td class="px-4 py-2 font-bold text-slate-700 border-b border-slate-100">Unimed Superior</td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,30</span><span class="text-[10px] opacity-80">205 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 2,30</span><span class="text-[10px] opacity-80">78 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 3,44</span><span class="text-[10px] opacity-80">55 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-yellow-50 text-yellow-700 border border-yellow-200"><span class="font-medium">R$ 4,59</span><span class="text-[10px] opacity-80">25 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 5,74</span><span class="text-[10px] opacity-80">9 vidas</span></div></td>
+                        <td class="p-1"><div class="flex flex-col items-center p-2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200"><span class="font-medium">R$ 6,89</span><span class="text-[10px] opacity-80">2 vidas</span></div></td>
+                        <td class="p-1"><div class="flex items-center justify-center p-2 rounded bg-slate-50 text-slate-400 h-full">-</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Script for Chart.js -->
+    <script>
+        // Set default font to Inter
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b'; // slate-500
+
+        // Gráfico 0: Foodlovers por Qtde de Dependentes
+        const ctxPop = document.getElementById('popChart').getContext('2d');
+        new Chart(ctxPop, {
+            type: 'bar',
+            data: {
+                labels: ['0 Dep.', '1 Dep.', '2 Dep.', '3 Dep.', '4 Dep.', '5 Dep.', '6 Dep.'],
+                datasets: [{
+                    label: 'Quantidade de Foodlovers',
+                    data: [4699, 1371, 834, 459, 79, 14, 3],
+                    backgroundColor: [
+                        '#10b981', // Verde
+                        '#10b981', // Verde
+                        '#ef4444', // Vermelho (Déficit dispara)
+                        '#dc2626', 
+                        '#b91c1c', 
+                        '#991b1b', 
+                        '#7f1d1d'
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y + ' Foodlovers';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Nº de Vidas (Titulares)' },
+                        grid: { borderDash: [4, 4], color: '#e2e8f0' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Gráfico 1: Mediana Antes vs Depois
+        const ctxMedian = document.getElementById('medianChart').getContext('2d');
+        new Chart(ctxMedian, {
+            type: 'line',
+            data: {
+                labels: ['0 Dep.', '1 Dep.', '2 Dep.', '3 Dep.', '4 Dep.', '5 Dep.', '6 Dep.'],
+                datasets: [
+                    {
+                        label: 'FY26 (Antes)',
+                        data: [2.27, 2.31, 3.51, 4.72, 5.79, 7.30, 7.73],
+                        borderColor: '#94a3b8', // slate-400
+                        backgroundColor: '#f1f5f9',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        pointBackgroundColor: '#94a3b8'
+                    },
+                    {
+                        label: 'FY27 (Pós 7,76%)',
+                        data: [2.43, 2.47, 3.75, 5.04, 6.17, 7.81, 8.16],
+                        borderColor: '#ef4444', // brand-500
+                        backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#dc2626',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8 } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': R$ ' + context.parsed.y.toFixed(2).replace('.', ',');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Custo de 1 Ponto (R$)' },
+                        ticks: {
+                            callback: function(value) { return 'R$ ' + value.toFixed(2).replace('.', ','); }
+                        },
+                        grid: { borderDash: [4, 4], color: '#e2e8f0' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Gráfico 2: Pontos de Saúde Alocados por Grade
+        const ctxGrade = document.getElementById('gradeChart').getContext('2d');
+        new Chart(ctxGrade, {
+            type: 'bar',
+            data: {
+                labels: ['Grade 6', 'Grade 7', 'Grade 8', 'Grade 9', 'Grade 10', 'Grade 11', 'Grade 12', 'Grade 13', 'Grade 14'],
+                datasets: [{
+                    label: 'Pontos Totais Alocados em Saúde',
+                    data: [170252, 194966, 1086043, 1433412, 1716960, 1258320, 393680, 721091, 262517],
+                    backgroundColor: [
+                        '#cbd5e1', '#cbd5e1', // 6, 7
+                        '#3b82f6', '#2563eb', '#1d4ed8', '#2563eb', // 8, 9, 10, 11 (destaques em azul)
+                        '#94a3b8', '#94a3b8', '#cbd5e1' // 12, 13, 14
+                    ],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let value = context.parsed.y;
+                                return value.toLocaleString('pt-BR') + ' pontos';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Volume de Pontos' },
+                        ticks: {
+                            callback: function(value) {
+                                return (value / 1000).toFixed(0) + 'k';
+                            }
+                        },
+                        grid: { borderDash: [4, 4], color: '#e2e8f0' }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Gráfico 3: NOVO - Arrecadação x Baixo d'Água (Stacked Bar)
+        const ctxBaixo = document.getElementById('baixoDaguaChart').getContext('2d');
+        new Chart(ctxBaixo, {
+            type: 'bar',
+            data: {
+                labels: ['Nacional', 'Nac. Plus', 'Premium', 'Efetivo', 'Ideal', 'Superior', 'Estilo', 'Absoluto', 'Exclusivo'],
+                datasets: [
+                    {
+                        label: 'Pago em Pontos (Foodlovers)',
+                        data: [1.44, 0.39, 0.11, 0.24, 0.17, 0.12, 0.15, 0.06, 0.01],
+                        backgroundColor: '#10b981', // emerald-500
+                        stack: 'Stack 0',
+                    },
+                    {
+                        label: 'Baixo d\'Água (Déficit iFood)',
+                        data: [4.44, 1.84, 0.68, 0.39, 0.46, 0.40, 0.30, 0.15, 0.03],
+                        backgroundColor: '#ef4444', // brand-500
+                        stack: 'Stack 0',
+                        borderRadius: {topLeft: 4, topRight: 4}
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true, boxWidth: 8, font: {family: 'Inter'} } },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': R$ ' + context.parsed.y.toFixed(2).replace('.', ',') + 'M';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        title: { display: true, text: 'Milhões (R$)' },
+                        ticks: {
+                            callback: function(value) { return 'R$ ' + value + 'M'; }
+                        },
+                        grid: { borderDash: [4, 4], color: '#e2e8f0' }
+                    },
+                    x: { stacked: true, grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
